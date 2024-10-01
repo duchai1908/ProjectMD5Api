@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -20,6 +19,8 @@ import java.util.Objects;
 public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryRepository categoryRepository;
     private final UploadService uploadService;
+
+    // Get all category( pagination, sort, search )
     @Override
     public Page<Category> findAll(Pageable pageable, String search) {
         Page<Category> categoryPage;
@@ -32,7 +33,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
 
-
+    // Add new Category
     @Override
     public Category save(CategoryRequest categoryRequest) throws DataExistException {
         if(categoryRepository.existsByName(categoryRequest.getName())) {
@@ -47,17 +48,20 @@ public class CategoryServiceImpl implements ICategoryService {
         return categoryRepository.save(category);
     }
 
+
     @Override
     public Category findById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()->new NoSuchElementException("Category not found"));
     }
 
+    // Get Category By Id
     @Override
     public Category getCategoryById(Long id) {
         Category category = findById(id);
         return categoryRepository.findCategoryById(id);
     }
 
+    // Update Category By Id
     @Override
     public Category update(CategoryRequest categoryRequest, Long id) throws DataExistException {
         Category category = findById(id);
@@ -74,6 +78,7 @@ public class CategoryServiceImpl implements ICategoryService {
         return categoryRepository.save(category);
     }
 
+    // Delete Category By Id
     @Override
     public void deleteById(Long id) {
         Category category = findById(id);

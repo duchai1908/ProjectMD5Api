@@ -11,15 +11,15 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtProvider {
-//    @Value("(${jwt.expired-time})")
-//    private long expired;
+    @Value("${jwt.expired-time}")
+    private long expired;
     @Value("${jwt.secret-key}")
     private String secretKey;
 
     public String generateToken(UserDetailCustom userDetailCustom) {
         return Jwts.builder().setSubject(userDetailCustom.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 864000))
+                .setExpiration(new Date(new Date().getTime() + expired))
                 .signWith(SignatureAlgorithm.HS512,secretKey)
                 .compact();
     }
