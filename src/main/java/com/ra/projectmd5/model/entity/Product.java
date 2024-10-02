@@ -19,6 +19,9 @@ public class Product {
     private Long id;
     @Column(name="product_name",nullable = false,unique = true, length = 100)
     private String name;
+    @Builder.Default
+    private Integer sell = 0;
+    private String image;
     private Integer sale;
     @Builder.Default
     private Boolean status = true;

@@ -13,4 +13,5 @@ import org.springframework.http.HttpStatus;
 public class DataError <T>{
     private T message;
     private HttpStatus status;
+    private int statusCode;
 }
