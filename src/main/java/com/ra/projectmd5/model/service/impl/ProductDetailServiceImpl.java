@@ -27,6 +27,14 @@ public class ProductDetailServiceImpl implements IProductDetailService {
     private final ISizeService sizeService;
     private final IColorService colorService;
     private final UploadService uploadService;
+
+    /**
+     * @Param pageable Pageable
+     * @Param search String
+     * @Param id Long
+     * @apiNote tìm kiếm tất cả ProductDetail theo ProductId ( có phân trang, sắp xếp, tìm kiếm)
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public Page<ProductDetail> findAllProductDetail(Pageable pageable, String search, Long id) {
         productService.getProductById(id);
@@ -39,11 +47,22 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         return productDetails;
     }
 
+    /**
+     * @Param id Long
+     * @apiNote Tìm kiếm ProductDetail theo productDetail id
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public ProductDetail getProductDetailById(Long id) {
         return productDetailRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Không tìm tấy chi tiết sản phẩm có id là: "+id));
     }
 
+    /**
+     * @Param productDetailRequest ProductDetailRequest
+     * @apiNote Thêm mới ProductDetail
+     * @throws DataExistException Tên ProductDetail bị trùng lặp
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public ProductDetail saveProductDetail(ProductDetailRequest productDetailRequest) throws DataExistException {
         productService.getProductById(productDetailRequest.getProductId());
@@ -76,11 +95,23 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         return productDetail;
     }
 
+    /**
+     * @Param name String
+     * @apiNote Kiểm tra tên ProductDetail có tồn tại hay không
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public boolean existsByName(String name) {
         return productDetailRepository.existsByName(name);
     }
 
+    /**
+     * @Param productDetailRequest ProductDetailRequest
+     * @Param id Long
+     * @apiNote Sửa ProductDetail theo ProductDetail id
+     * @throws DataExistException tên ProductDetail đã tồn tại
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public ProductDetail updateProductDetail(ProductDetailRequest productDetailRequest, Long id) throws DataExistException {
         productService.getProductById(productDetailRequest.getProductId());
@@ -114,9 +145,15 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         return productDetail;
     }
 
+    /**
+     * @Param id Long
+     * @apiNote Xoá ProductDetail theo ProductDetail id
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public void deleteProductDetail(Long id) {
         ProductDetail productDetail = getProductDetailById(id);
+        imageProductDetailService.deleteImageByProductDetailId(id);
         productDetailRepository.delete(productDetail);
     }
 }
