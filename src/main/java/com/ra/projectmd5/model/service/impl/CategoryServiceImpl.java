@@ -20,7 +20,12 @@ public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryRepository categoryRepository;
     private final UploadService uploadService;
 
-    // Get all category( pagination, sort, search )
+    /**
+     * Get all category
+     * @Param {*} pageable: Pagination, Sort, Search
+     * @Param {*} search: Searching value
+     * Auth: Duc Hai (01/10/2024)
+     * */
     @Override
     public Page<Category> findAll(Pageable pageable, String search) {
         Page<Category> categoryPage;
@@ -32,7 +37,11 @@ public class CategoryServiceImpl implements ICategoryService {
         return categoryPage;
     }
 
-
+    /**
+     * Add new category
+     * @Param {*} categoryRequest: Object request from user
+     * Auth: Duc Hai (01/10/2024)
+     * */
     // Add new Category
     @Override
     public Category save(CategoryRequest categoryRequest) throws DataExistException {
@@ -49,18 +58,29 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
 
+
     @Override
     public Category findById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()->new NoSuchElementException("Category not found"));
     }
 
-    // Get Category By Id
+    /**
+     * get Category by Category id
+     * @Param {*} id: Category id
+     * Auth: Duc Hai (01/10/2024)
+     * */
     @Override
     public Category getCategoryById(Long id) {
         Category category = findById(id);
         return categoryRepository.findCategoryById(id);
     }
 
+    /**
+     * Update Category By Id
+     * @Param {*} categoryRequest: Object request from user
+     * @Param {*} id: Category id
+     * Auth: Duc Hai (01/10/2024)
+     * */
     // Update Category By Id
     @Override
     public Category update(CategoryRequest categoryRequest, Long id) throws DataExistException {
@@ -78,6 +98,11 @@ public class CategoryServiceImpl implements ICategoryService {
         return categoryRepository.save(category);
     }
 
+    /**
+     * Delete Category by id
+     * @Param {*} id: Category id
+     * Auth: Duc Hai (01/10/2024)
+     * */
     // Delete Category By Id
     @Override
     public void deleteById(Long id) {

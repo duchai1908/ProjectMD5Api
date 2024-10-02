@@ -18,16 +18,31 @@ import java.util.Objects;
 public class ColorServiceImpl implements IColorService {
     private final ModelMapper modelMapper;
     private final IColorRepository colorRepository;
+
+    /**
+     * Get All Color
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public List<Color> getAllColors() {
         return colorRepository.findAll();
     }
 
+    /**
+     * Get Color By Color Id
+     * @Param {*} id: Color id
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public Color getColorById(Long id) {
         return colorRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Color not found"));
     }
 
+    /**
+     * Add new Color
+     * @Param {*} color: Object Color
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public Color save(Color color) throws DataExistException {
         if(colorRepository.existsByColor(color.getColor())){
@@ -38,6 +53,12 @@ public class ColorServiceImpl implements IColorService {
         return colorRepository.save(color);
     }
 
+    /**
+     * Update Clor by Id
+     * @Param {*} color: Object Color
+     * @Param {*} id: Color id
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public Color update(Color color, Long id) throws DataExistException {
 
@@ -50,6 +71,11 @@ public class ColorServiceImpl implements IColorService {
         return colorRepository.save(colors);
     }
 
+    /**
+     * Delete color by color id
+     * @Param {*} id: Color id
+     * Auth: Duc Hai (02/10/2024)
+     * */
     @Override
     public void delete(Long id) {
         Color colors = getColorById(id);

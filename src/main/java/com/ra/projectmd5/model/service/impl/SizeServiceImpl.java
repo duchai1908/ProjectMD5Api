@@ -42,7 +42,7 @@ public class SizeServiceImpl implements ISizeService {
     @Override
     public Size save(Size size) throws DataExistException {
         if(sizeRepository.existsBySize(size.getSize())){
-            throw new DataExistException("Size is exists","color");
+            throw new DataExistException("Size is exists","size");
         }
         size.setCreated_at(new Date());
         size.setUpdated_at(new Date());
@@ -60,7 +60,7 @@ public class SizeServiceImpl implements ISizeService {
 
         Size sizes = getSizeById(id);
         if(!Objects.equals(size.getSize(), sizes.getSize()) && sizeRepository.existsBySize(size.getSize())) {
-            throw new DataExistException("Size is exists", "color");
+            throw new DataExistException("Size is exists", "size");
         }
         sizes.setSize(size.getSize());
         sizes.setUpdated_at(new Date());
