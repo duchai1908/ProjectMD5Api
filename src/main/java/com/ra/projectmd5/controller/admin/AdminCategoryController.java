@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/category")
+@RequestMapping("/api/v1/admin/category")
 @RequiredArgsConstructor
 public class AdminCategoryController {
     private final ICategoryService categoryService;

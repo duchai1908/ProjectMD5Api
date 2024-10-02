@@ -18,7 +18,7 @@ public class AdminSizeController {
     public ResponseEntity<?> getAllSize() {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(sizeService.getSizeList(), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
-    @GetMapping("/{sizeId}")
+    @GetMapping("/api/v1/{sizeId}")
     public ResponseEntity<?> getSizeById(@PathVariable Long sizeId) {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(sizeService.getSizeById(sizeId), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }

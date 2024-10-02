@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/color")
+@RequestMapping("/api/v1/admin/color")
 @RequiredArgsConstructor
 public class AdminColorController {
     private final IColorService colorService;

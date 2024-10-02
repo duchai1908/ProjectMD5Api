@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/products")
+@RequestMapping("/api/v1/admin/products")
 @RequiredArgsConstructor
 public class AdminProductController {
     private final IProductService productService;
