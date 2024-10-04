@@ -5,6 +5,7 @@ import com.ra.projectmd5.model.dto.request.CategoryRequest;
 import com.ra.projectmd5.model.dto.response.ResponseDtoSuccess;
 import com.ra.projectmd5.model.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,8 +20,17 @@ public class AdminCategoryController {
     private final ICategoryService categoryService;
 
     // List Category
+    //api/v1/admin/category?page=0&size=4&sortField=name&sortDirection=ASC
     @GetMapping
-    public ResponseEntity<?> getAllCategory(@PageableDefault(page = 0,size = 2, sort = "id", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(defaultValue = "" )String search) {
+    public ResponseEntity<?> getAllCategory(
+            @PageableDefault(page = 0, size = 4, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "id") String sortField, // Thêm tham số sortField
+            @RequestParam(defaultValue = "ASC") String sortDirection // Thêm tham số sortDirection
+    ) {
+        // Chuyển đổi hướng sắp xếp từ String thành Sort.Direction
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection.toUpperCase());
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), direction, sortField);
         return new ResponseEntity<>(new ResponseDtoSuccess<>(categoryService.findAll(pageable, search),HttpStatus.OK.value(),HttpStatus.OK), HttpStatus.OK);
     }
 
