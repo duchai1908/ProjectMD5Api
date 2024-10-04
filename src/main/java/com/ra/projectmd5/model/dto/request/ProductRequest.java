@@ -21,4 +21,6 @@ public class ProductRequest {
     private boolean status;
     @NotNull(message = "Danh mục không được để trống")
     private Long categoryId;
+    @NotNull(message = "Mục giảm giá không được để trống")
+    private Integer sale;
 }

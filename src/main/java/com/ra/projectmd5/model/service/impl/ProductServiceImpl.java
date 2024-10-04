@@ -9,7 +9,9 @@ import com.ra.projectmd5.model.service.IProductService;
 import com.ra.projectmd5.model.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,15 +30,48 @@ public class ProductServiceImpl implements IProductService {
      * @apiNote Lấy ra danh sách toàn bộ sản phẩm
      * Auth: Duc Hai (02/10/2024)
      */
+//    @Override
+//    public Page<Product> findAll(Pageable pageable, String search) {
+//        Page<Product> products;
+//        if(search == null || search.isEmpty()) {
+//            products =  productRepository.findAll(pageable);
+//        }else{
+//            products = productRepository.findProductByNameContainsIgnoreCase(search, pageable);
+//        }
+//        return products;
+//    }
     @Override
-    public Page<Product> findAll(Pageable pageable, String search) {
-        Page<Product> products;
-        if(search == null || search.isEmpty()) {
-            products =  productRepository.findAll(pageable);
-        }else{
-            products = productRepository.findProductByNameContainsIgnoreCase(search, pageable);
+    public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "id"); // Default sort by "id"
+
+        // Xử lý giá trị của sortOption
+        if ("aToZ".equals(sortOption)) {
+            sort = Sort.by(Sort.Direction.ASC, "name");
+        } else if ("zToA".equals(sortOption)) {
+            sort = Sort.by(Sort.Direction.DESC, "name");
         }
-        return products;
+//        else if ("lowToHigh".equals(sortOption)) {
+//            sort = Sort.by(Sort.Direction.ASC, "price");
+//        } else if ("highToLow".equals(sortOption)) {
+//            sort = Sort.by(Sort.Direction.DESC, "price");
+//        }
+
+        // Cập nhật lại Pageable với sort mới
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        // Kiểm tra các filter khác (search, minPrice, maxPrice, color)
+        if ((search == null || search.isEmpty()) && minPrice == null && maxPrice == null && (color == null || color.isEmpty())) {
+            return productRepository.findAll(pageable); // Nếu không có filter, lấy tất cả
+        }
+
+        System.out.println("search = " + search);
+        System.out.println("minPrice = " + minPrice);
+        System.out.println("maxPrice = " + maxPrice);
+        System.out.println("color = " + color);
+        System.out.println("sortOption = " + sortOption);
+
+        // Gọi repository với các filter
+        return productRepository.findProductsWithFilters(pageable, search, minPrice, maxPrice, color,sortOption);
     }
 
     /**
@@ -64,6 +99,8 @@ public class ProductServiceImpl implements IProductService {
      * @Param productRequest ProductRequest
      * @apiNote Thêm mới sản phẩm
      * @throws DataExistException sản phẩm đã tồn tại
+     * @update set sale by product request
+     * update: konta (3/10.2024)
      * Auth: Duc Hai (02/10/2024)
      * */
     @Override
@@ -79,7 +116,7 @@ public class ProductServiceImpl implements IProductService {
                 .updated_at(new Date())
                 .image(uploadService.uploadFileToServer(productRequest.getImage()))
                 .status(true)
-                .sale(0)
+                .sale(productRequest.getSale())
                 .build();
         return productRepository.save(product);
     }
@@ -89,6 +126,9 @@ public class ProductServiceImpl implements IProductService {
      * @Param productRequest ProductRequest
      * @apiNote Sửa thông tin của sản phẩm dựa theo id sản phẩm
      * @throws DataExistException sản phẩm đã tồn tại
+     * @Update setSell by product sell
+     * @Update set Sale by productRequest
+     * update: konta (3/10.2024)
      * Auth: Duc Hai (02/10/2024)
      * */
     @Override
@@ -103,9 +143,9 @@ public class ProductServiceImpl implements IProductService {
             product.setImage(multipartFile);
         }
         product.setName(productRequest.getName());
-        product.setSell(0);
+//        product.setSell(product.getSell());
         product.setCategory(categoryService.getCategoryById(productRequest.getCategoryId()));
-        product.setSale(0);
+        product.setSale(productRequest.getSale());
         product.setStatus(productRequest.isStatus());
         product.setUpdated_at(new Date());
         return productRepository.save(product);
@@ -121,4 +161,6 @@ public class ProductServiceImpl implements IProductService {
         Product product = getProductById(id);
         productRepository.delete(product);
     }
+
+
 }

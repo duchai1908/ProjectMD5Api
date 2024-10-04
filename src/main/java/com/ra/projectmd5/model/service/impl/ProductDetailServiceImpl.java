@@ -68,9 +68,9 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productService.getProductById(productDetailRequest.getProductId());
         sizeService.getSizeById(productDetailRequest.getSizeId());
         colorService.getColorById(productDetailRequest.getColorId());
-        if(productDetailRepository.existsByName(productDetailRequest.getName())){
-            throw new DataExistException("Tên chi tiết sản phẩm đã tồn tại","name");
-        }
+//        if(productDetailRepository.existsByName(productDetailRequest.getName())){
+//            throw new DataExistException("Tên chi tiết sản phẩm đã tồn tại","name");
+//        }
         ProductDetail productDetail = ProductDetail.builder()
                 .name(productDetailRequest.getName())
                 .description(productDetailRequest.getDescription())

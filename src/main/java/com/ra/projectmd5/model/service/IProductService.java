@@ -7,11 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IProductService {
-    Page<Product> findAll(Pageable pageable, String search);
+//    Page<Product> findAll(Pageable pageable, String search);
     Product getProductById(Long id);
     Product saveProduct(ProductRequest productRequest) throws DataExistException;
     boolean existsByProductName(String productName);
     Product updateProduct(Long id, ProductRequest productRequest) throws DataExistException;
     void deleteProduct(Long id);
-
+    Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption);
 }
