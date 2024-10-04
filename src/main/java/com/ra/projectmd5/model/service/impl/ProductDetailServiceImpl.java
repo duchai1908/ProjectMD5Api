@@ -2,8 +2,7 @@ package com.ra.projectmd5.model.service.impl;
 
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductDetailRequest;
-import com.ra.projectmd5.model.entity.ImageProductDetail;
-import com.ra.projectmd5.model.entity.ProductDetail;
+import com.ra.projectmd5.model.entity.*;
 import com.ra.projectmd5.model.repository.IProductDetailRepository;
 import com.ra.projectmd5.model.service.*;
 import jakarta.transaction.Transactional;
@@ -155,5 +154,20 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         ProductDetail productDetail = getProductDetailById(id);
         imageProductDetailService.deleteImageByProductDetailId(id);
         productDetailRepository.delete(productDetail);
+    }
+
+    /**
+     * @Param colorId Long
+     * @Param sizeId Long
+     * @Param productId Long
+     * @apiNote tìm kiếm chi tiết sản phẩm theo color id, size id và product id
+     * @Auth Duc Hai (04/10/2024)
+     * */
+    @Override
+    public ProductDetail getProductDetailByColorAndSize(Long colorId, Long sizeId, Long productId) {
+        Color color = colorService.getColorById(colorId);
+        Size size = sizeService.getSizeById(sizeId);
+        Product product = productService.getProductById(productId);
+        return productDetailRepository.findByColorAndSizeAndProduct(color, size, product);
     }
 }
