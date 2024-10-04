@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface IUserService {
     Page<User> findAll(Pageable pageable,String search);
     User findById(Long id);
+    User changeStatus(Long userId);
 }

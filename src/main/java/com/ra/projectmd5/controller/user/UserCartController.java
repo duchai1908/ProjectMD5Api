@@ -1,5 +1,6 @@
 package com.ra.projectmd5.controller.user;
 
+import com.ra.projectmd5.exception.OutOfStockException;
 import com.ra.projectmd5.model.dto.request.CartItemRequest;
 import com.ra.projectmd5.model.dto.response.ResponseDtoSuccess;
 import com.ra.projectmd5.model.service.ICartItemService;
@@ -28,7 +29,7 @@ public class UserCartController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(cartItemService.getAllCartItems(pageable,userDetailCustom.getUsers().getId()),HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<?> addToCart(@RequestBody CartItemRequest cartItemRequest, @AuthenticationPrincipal UserDetailCustom userDetailCustom) {
+    public ResponseEntity<?> addToCart(@RequestBody CartItemRequest cartItemRequest, @AuthenticationPrincipal UserDetailCustom userDetailCustom) throws OutOfStockException {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(cartItemService.addToCart(cartItemRequest,userDetailCustom.getUsers().getId()), HttpStatus.CREATED.value(), HttpStatus.CREATED), HttpStatus.CREATED);
     }
     @PutMapping("/changeQuantity/{quantity}/{cartItemId}")
