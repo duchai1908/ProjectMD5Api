@@ -14,4 +14,5 @@ public interface IProductService {
     Product updateProduct(Long id, ProductRequest productRequest) throws DataExistException;
     void deleteProduct(Long id);
     Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption);
+    Product changeStatus(Long id);
 }
