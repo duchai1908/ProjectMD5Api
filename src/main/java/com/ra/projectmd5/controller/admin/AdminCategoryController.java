@@ -47,4 +47,9 @@ public class AdminCategoryController {
         categoryService.deleteById(cateId);
         return new ResponseEntity<>(new ResponseDtoSuccess<>("Delete Successly",HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
+    // Change status by id
+    @PutMapping("/changeStatus/{cateId}")
+    public ResponseEntity<?> changeCategoryStatus(@PathVariable Long cateId) {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(categoryService.changeStatus(cateId),HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
+    }
 }
