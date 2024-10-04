@@ -58,9 +58,10 @@ public class SecurityConfig {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(url -> url.requestMatchers("/api/v1/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
-                        .requestMatchers("/api/v1/moderator/**").hasAuthority(RoleName.ROLE_MODERATOR.name())
-                        .requestMatchers("/user/**").hasAuthority(RoleName.ROLE_USER.name())
+                .authorizeHttpRequests(url -> url
+//                        .requestMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
+//                        .requestMatchers("/api/v1/moderator/**").hasAuthority(RoleName.ROLE_MODERATOR.name())
+//                        .requestMatchers("/user/**").hasAuthority(RoleName.ROLE_USER.name())
                         .anyRequest().permitAll())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint).accessDeniedHandler(accessDenied))
