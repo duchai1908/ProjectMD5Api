@@ -11,6 +11,9 @@ public interface ICartItemService {
 
     CartItem addToCart(CartItemRequest cartItemRequest, Long userId);
     List<CartItem> getAllCartItemsNoPagination(Long userId);
-    Page<CartItem> getAllCartItems(Pageable pageable, Long userId, String search);
-    CartItem changeQuantity(Long userId);
+    Page<CartItem> getAllCartItems(Pageable pageable, Long userId);
+    CartItem changeQuantity(Long cartItemId, Integer quantity);
+    void deleteCartItem(Long cartItemId);
+    void deleteAllCartItems(Long userId);
+    CartItem getCartItem(Long cartItemId);
 }
