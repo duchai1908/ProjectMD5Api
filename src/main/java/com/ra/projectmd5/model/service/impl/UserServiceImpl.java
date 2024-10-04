@@ -15,9 +15,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Page<User> findAll(Pageable pageable, String search) {
-        return null;
+        if (search == null || search.isEmpty()) {
+            return userRepository.findAll(pageable);
+        }else {
+            return userRepository.findByUsernameContainsIgnoreCase(search, pageable);
+        }
     }
-
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(()->new RuntimeException("Không tìm thấy người dùng"));

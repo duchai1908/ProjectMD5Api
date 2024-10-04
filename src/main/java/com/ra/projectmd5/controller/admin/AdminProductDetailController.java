@@ -42,4 +42,9 @@ public class AdminProductDetailController {
         productDetailService.deleteProductDetail(productDetailId);
         return new ResponseEntity<>(new ResponseDtoSuccess<>("Delete Product Detail succesfully", HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
+
+    @GetMapping("/{colorId}/{sizeId}/{productId}")
+    public ResponseEntity<?> getProductDetailBySizeColorId(@PathVariable Long colorId, @PathVariable Long sizeId, @PathVariable Long productId) {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.getProductDetailByColorAndSize(colorId, sizeId, productId), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
+    }
 }
