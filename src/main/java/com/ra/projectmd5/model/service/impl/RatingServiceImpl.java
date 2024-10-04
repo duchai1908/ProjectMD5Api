@@ -50,7 +50,7 @@ public class RatingServiceImpl implements IRatingService {
         }
 
         if(!check){
-            throw new DataExistException("Bạn đã đánh giá sản phẩm này rồi","messeage");
+            throw new DataExistException("Bạn đã đánh giá sản phẩm này rồi","message");
         }
         Rating rating = Rating.builder()
                 .rating(ratingRequest.getRating())

@@ -162,5 +162,15 @@ public class ProductServiceImpl implements IProductService {
         productRepository.delete(product);
     }
 
-
+    /**
+     * @Param id Long
+     * @apiNote thay đổi trạng thái sản phẩm
+     * @Auth Duc Hai (04/10/2024)
+     * */
+    @Override
+    public Product changeStatus(Long id) {
+        Product product = getProductById(id);
+        product.setStatus(!product.getStatus());
+        return productRepository.save(product);
+    }
 }

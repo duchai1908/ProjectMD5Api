@@ -14,5 +14,6 @@ public interface ICategoryService {
     Category update(CategoryRequest categoryRequest, Long id) throws DataExistException;
     Category findById(Long id);
     Category getCategoryById(Long id);
+    Category changeStatus(Long id);
     void deleteById(Long id);
 }
