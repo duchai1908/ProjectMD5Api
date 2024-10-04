@@ -110,6 +110,7 @@ public class CategoryServiceImpl implements ICategoryService {
         categoryRepository.delete(category);
     }
 
+
     /**
      * @Param id Long
      * @apiNote Thay đổi trạng thái của danh mục
@@ -121,5 +122,4 @@ public class CategoryServiceImpl implements ICategoryService {
         category.setStatus(!category.getStatus());
         return categoryRepository.save(category);
     }
-    //add
 }

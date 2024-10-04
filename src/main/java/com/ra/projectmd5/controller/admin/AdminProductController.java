@@ -52,11 +52,6 @@ public class AdminProductController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.updateProduct(productId,productRequest),HttpStatus.OK.value(),HttpStatus.OK),HttpStatus.OK);
     }
 
-    @PutMapping("/changeStatus/{productId}")
-    public ResponseEntity<?> changeProductStatus(@PathVariable Long productId) {
-        return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.changeStatus(productId),HttpStatus.OK.value(),HttpStatus.OK),HttpStatus.OK);
-    }
-
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
