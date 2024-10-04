@@ -109,4 +109,16 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = findById(id);
         categoryRepository.delete(category);
     }
+
+    /**
+     * @Param id Long
+     * @apiNote Thay đổi trạng thái của danh mục
+     * @Auth : Duc Hai (04/10/2024)
+     * */
+    @Override
+    public Category changeStatus(Long id) {
+        Category category = findById(id);
+        category.setStatus(!category.getStatus());
+        return categoryRepository.save(category);
+    }
 }
