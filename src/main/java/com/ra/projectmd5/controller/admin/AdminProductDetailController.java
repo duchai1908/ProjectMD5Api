@@ -42,4 +42,14 @@ public class AdminProductDetailController {
         productDetailService.deleteProductDetail(productDetailId);
         return new ResponseEntity<>(new ResponseDtoSuccess<>("Delete Product Detail succesfully", HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity<?> getAllProductDetails() {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.findAllProductDetailByNothing(), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
+    }
+
+    @GetMapping("/productId/{productId}")
+    public ResponseEntity<?> getAllProductDetailsByProductId(@PathVariable Long productId) {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.findAllProductDetailByProductId(productId), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
+    }
 }

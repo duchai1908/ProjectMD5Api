@@ -6,6 +6,8 @@ import com.ra.projectmd5.model.entity.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IProductDetailService {
     Page<ProductDetail> findAllProductDetail(Pageable pageable,String search, Long id);
     ProductDetail getProductDetailById(Long id);
@@ -13,5 +15,6 @@ public interface IProductDetailService {
     ProductDetail updateProductDetail(ProductDetailRequest productDetailRequest, Long id) throws DataExistException;
     void deleteProductDetail(Long id);
     boolean existsByName(String name);
-
+    List<ProductDetail> findAllProductDetailByNothing();
+    List<ProductDetail> findAllProductDetailByProductId(Long id);
 }

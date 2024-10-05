@@ -1,10 +1,12 @@
 package com.ra.projectmd5.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -27,11 +29,12 @@ public class Product {
     private Boolean status = true;
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date created_at;
+    private Date createdAt;
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date updated_at;
+    private Date updatedAt;
     @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
+
 }
