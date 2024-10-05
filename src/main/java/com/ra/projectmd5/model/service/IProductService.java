@@ -14,7 +14,12 @@ public interface IProductService {
     boolean existsByProductName(String productName);
     Product updateProduct(Long id, ProductUpdateRequest productRequest) throws DataExistException;
     void deleteProduct(Long id);
+
     Page<Product> findAllWithFilter(Pageable pageable, String search, Double minPrice, Double maxPrice, Long colorId, String sortOption);
     Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
     Page<Product> findAllProductsByNameAndSort(String productName, Pageable pageable, String sortOption);
+
+    Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption);
+    Product changeStatus(Long id);
+
 }

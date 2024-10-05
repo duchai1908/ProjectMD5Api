@@ -158,6 +158,7 @@ public class ProductServiceImpl implements IProductService {
         productRepository.delete(product);
     }
 
+
     @Override
     public Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable) {
         return productRepository.findProductByNameContainsIgnoreCase(productName,pageable);
@@ -178,6 +179,18 @@ public class ProductServiceImpl implements IProductService {
             case "newToOld" -> productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(productName, pageable);
             default -> productRepository.findByNameContainingIgnoreCase(productName,pageable);
         };
+
+    /**
+     * @Param id Long
+     * @apiNote thay đổi trạng thái sản phẩm
+     * @Auth Duc Hai (04/10/2024)
+     * */
+    @Override
+    public Product changeStatus(Long id) {
+        Product product = getProductById(id);
+        product.setStatus(!product.getStatus());
+        return productRepository.save(product);
+
     }
 
 }

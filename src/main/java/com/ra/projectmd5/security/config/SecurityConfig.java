@@ -52,7 +52,7 @@ public class SecurityConfig {
                     config.setAllowedOrigins(List.of("http://localhost:5173"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowCredentials(true);
-                    config.setAllowedHeaders(List.of(""));
+                    config.setAllowedHeaders(List.of("*"));
                     config.setExposedHeaders(List.of("*"));
                     return config;
                 }))

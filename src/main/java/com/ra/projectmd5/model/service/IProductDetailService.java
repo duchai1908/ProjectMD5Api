@@ -13,8 +13,11 @@ public interface IProductDetailService {
     ProductDetail getProductDetailById(Long id);
     ProductDetail saveProductDetail(ProductDetailRequest productDetailRequest) throws DataExistException;
     ProductDetail updateProductDetail(ProductDetailRequest productDetailRequest, Long id) throws DataExistException;
+    ProductDetail getProductDetailByColorAndSize(Long colorId, Long sizeId, Long productId);
     void deleteProductDetail(Long id);
     boolean existsByName(String name);
+
     List<ProductDetail> findAllProductDetailByNothing();
     List<ProductDetail> findAllProductDetailByProductId(Long id);
+
 }

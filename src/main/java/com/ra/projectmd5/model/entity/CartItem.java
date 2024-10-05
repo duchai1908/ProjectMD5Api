@@ -1,5 +1,6 @@
 package com.ra.projectmd5.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class CartItem {
     private Integer quantity;
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonIgnoreProperties({"password","id"})
     private User user;
     @ManyToOne
     @JoinColumn(name="product_id")
