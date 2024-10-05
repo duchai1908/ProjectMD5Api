@@ -17,12 +17,24 @@ import java.util.NoSuchElementException;
 public class AddressServiceImpl implements IAddressService {
     private final IAddressRepository iAddressRepository;
     private final IUserService iUserService;
+
+    /**
+     * @Param userId Long
+     * @apiNote Danh sách địa chỉ theo người dùng
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public List<Address> listAddress(Long userId) {
         User user = iUserService.findById(userId);
         return iAddressRepository.findByUserId(userId);
     }
 
+    /**
+     * @Param addessRequest AddressRequest
+     * @Param userId Long
+     * @apiNote Thêm mới địa chỉ
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Address addAddress(AddressRequest addressRequest, Long userId) {
         User user = iUserService.findById(userId);
@@ -35,6 +47,12 @@ public class AddressServiceImpl implements IAddressService {
         return iAddressRepository.save(address);
     }
 
+    /**
+     * @Param addessRequest AddressRequest
+     * @Param addressId Long
+     * @apiNote Sửa địa chỉ
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Address updateAddress(AddressRequest addressRequest, Long addressId) {
         Address address = getAddress(addressId);
@@ -44,11 +62,22 @@ public class AddressServiceImpl implements IAddressService {
         return null;
     }
 
+    /**
+     * @Param addressId Long
+     * @apiNote Lấy địa chỉ theo Id
+     * @throws NoSuchElementException Không tìm thấy địa chỉ
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Address getAddress(Long addressId) {
         return iAddressRepository.findById(addressId).orElseThrow(()-> new NoSuchElementException("Không tìm thấy địa chỉ"));
     }
 
+    /**
+     * @Param addressId Long
+     * @apiNote Xoá địa chỉ
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public void deleteAddress(Long addressId) {
         Address address = getAddress(addressId);
