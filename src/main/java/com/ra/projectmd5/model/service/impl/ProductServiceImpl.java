@@ -2,6 +2,7 @@ package com.ra.projectmd5.model.service.impl;
 
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductRequest;
+import com.ra.projectmd5.model.dto.request.ProductUpdateRequest;
 import com.ra.projectmd5.model.entity.Product;
 import com.ra.projectmd5.model.repository.IProductRepository;
 import com.ra.projectmd5.model.service.ICategoryService;
@@ -30,18 +31,18 @@ public class ProductServiceImpl implements IProductService {
      * @apiNote Lấy ra danh sách toàn bộ sản phẩm
      * Auth: Duc Hai (02/10/2024)
      */
-//    @Override
-//    public Page<Product> findAll(Pageable pageable, String search) {
-//        Page<Product> products;
-//        if(search == null || search.isEmpty()) {
-//            products =  productRepository.findAll(pageable);
-//        }else{
-//            products = productRepository.findProductByNameContainsIgnoreCase(search, pageable);
-//        }
-//        return products;
-//    }
     @Override
-    public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
+    public Page<Product> findAll(Pageable pageable, String search) {
+        Page<Product> products;
+        if(search == null || search.isEmpty()) {
+            products =  productRepository.findAll(pageable);
+        }else{
+            products = productRepository.findProductByNameContainsIgnoreCase(search, pageable);
+        }
+        return products;
+    }
+    @Override
+    public Page<Product> findAllWithFilter(Pageable pageable, String search, Double minPrice, Double maxPrice, Long colorId, String sortOption) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id"); // Default sort by "id"
 
         // Xử lý giá trị của sortOption
@@ -50,28 +51,23 @@ public class ProductServiceImpl implements IProductService {
         } else if ("zToA".equals(sortOption)) {
             sort = Sort.by(Sort.Direction.DESC, "name");
         }
-//        else if ("lowToHigh".equals(sortOption)) {
-//            sort = Sort.by(Sort.Direction.ASC, "price");
-//        } else if ("highToLow".equals(sortOption)) {
-//            sort = Sort.by(Sort.Direction.DESC, "price");
-//        }
 
         // Cập nhật lại Pageable với sort mới
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
         // Kiểm tra các filter khác (search, minPrice, maxPrice, color)
-        if ((search == null || search.isEmpty()) && minPrice == null && maxPrice == null && (color == null || color.isEmpty())) {
+        if ((search == null || search.isEmpty()) && minPrice == null && maxPrice == null && (colorId == null)) {
             return productRepository.findAll(pageable); // Nếu không có filter, lấy tất cả
         }
 
         System.out.println("search = " + search);
         System.out.println("minPrice = " + minPrice);
         System.out.println("maxPrice = " + maxPrice);
-        System.out.println("color = " + color);
+        System.out.println("colorId = " + colorId);
         System.out.println("sortOption = " + sortOption);
 
         // Gọi repository với các filter
-        return productRepository.findProductsWithFilters(pageable, search, minPrice, maxPrice, color,sortOption);
+        return productRepository.findProductsWithFilters(pageable, search, minPrice, maxPrice, colorId,sortOption);
     }
 
     /**
@@ -112,8 +108,8 @@ public class ProductServiceImpl implements IProductService {
                 .name(productRequest.getName())
                 .sell(0)
                 .category(categoryService.getCategoryById(productRequest.getCategoryId()))
-                .created_at(new Date())
-                .updated_at(new Date())
+                .createdAt(new Date())
+                .updatedAt(new Date())
                 .image(uploadService.uploadFileToServer(productRequest.getImage()))
                 .status(true)
                 .sale(productRequest.getSale())
@@ -132,7 +128,7 @@ public class ProductServiceImpl implements IProductService {
      * Auth: Duc Hai (02/10/2024)
      * */
     @Override
-    public Product updateProduct(Long id, ProductRequest productRequest) throws DataExistException {
+    public Product updateProduct(Long id, ProductUpdateRequest productRequest) throws DataExistException {
         Product product = getProductById(id);
         String multipartFile;
         if(!Objects.equals(productRequest.getName(), product.getName()) && existsByProductName(productRequest.getName())){
@@ -147,7 +143,7 @@ public class ProductServiceImpl implements IProductService {
         product.setCategory(categoryService.getCategoryById(productRequest.getCategoryId()));
         product.setSale(productRequest.getSale());
         product.setStatus(productRequest.isStatus());
-        product.setUpdated_at(new Date());
+        product.setUpdatedAt(new Date());
         return productRepository.save(product);
     }
 
@@ -162,6 +158,28 @@ public class ProductServiceImpl implements IProductService {
         productRepository.delete(product);
     }
 
+
+    @Override
+    public Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable) {
+        return productRepository.findProductByNameContainsIgnoreCase(productName,pageable);
+    }
+
+    /**
+     * @Param name: productName,sort: sortOption
+     * @apiNote tìm theo tên và sắp xếp
+     * Auth: Konta (05/10/2024)
+     * */
+    @Override
+    public Page<Product> findAllProductsByNameAndSort(String productName, Pageable pageable, String sortOption) {
+        System.out.println(productName);
+        return switch (sortOption) {
+            case "aToZ" -> productRepository.findProductsByNameContainsIgnoreCaseOrderByNameAsc(productName, pageable);
+            case "zToA" -> productRepository.findProductsByNameContainsIgnoreCaseOrderByNameDesc(productName, pageable);
+            case "oldToNew" -> productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtDesc(productName, pageable);
+            case "newToOld" -> productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(productName, pageable);
+            default -> productRepository.findByNameContainingIgnoreCase(productName,pageable);
+        };
+
     /**
      * @Param id Long
      * @apiNote thay đổi trạng thái sản phẩm
@@ -172,6 +190,7 @@ public class ProductServiceImpl implements IProductService {
         Product product = getProductById(id);
         product.setStatus(!product.getStatus());
         return productRepository.save(product);
+
     }
 
 }

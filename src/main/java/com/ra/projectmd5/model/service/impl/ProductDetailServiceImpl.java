@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -156,6 +157,16 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productDetailRepository.delete(productDetail);
     }
 
+
+    @Override
+    public List<ProductDetail> findAllProductDetailByNothing() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDetail> findAllProductDetailByProductId(Long id) {
+        return productDetailRepository.findProductDetailsByProduct_Id(id);
+
     /**
      * @Param colorId Long
      * @Param sizeId Long
@@ -169,5 +180,6 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         Size size = sizeService.getSizeById(sizeId);
         Product product = productService.getProductById(productId);
         return productDetailRepository.findByColorAndSizeAndProduct(color, size, product);
+
     }
 }
