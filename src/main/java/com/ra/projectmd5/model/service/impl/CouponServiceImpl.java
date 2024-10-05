@@ -17,6 +17,12 @@ import java.util.NoSuchElementException;
 public class CouponServiceImpl implements ICouponService {
     private final UUIDService uuidService;
     private final ICouponRepository couponRepository;
+    /**
+     * @Param pageable Pageable
+     * @Param search String
+     * @apiNote lấy ra danh sách toàn bộ coupon
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Page<Coupon> getCoupons(Pageable pageable, String search) {
         Page<Coupon> coupons;
@@ -28,6 +34,11 @@ public class CouponServiceImpl implements ICouponService {
         return coupons;
     }
 
+    /**
+     * @param coupon Coupon
+     * @apiNote Thêm mới coupon
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Coupon addCoupon(Coupon coupon) {
         Coupon couponAdd = Coupon.builder()
@@ -41,11 +52,22 @@ public class CouponServiceImpl implements ICouponService {
         return couponRepository.save(couponAdd);
     }
 
+    /**
+     * @Param couponId Long
+     * @apiNote Lấy chi tiết coupon theo id
+     * @throws NoSuchElementException Không tìm thấy coupon
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId).orElseThrow(()-> new NoSuchElementException("Không tìm thấy coupon"));
     }
 
+    /**
+     * @Param couponId Long
+     * @apiNote Xoá coupon
+     * @Auth Duc Hai (04/10/2024)
+     * */
     @Override
     public void deleteCoupon(Long couponId) {
         Coupon coupon = getCoupon(couponId);
