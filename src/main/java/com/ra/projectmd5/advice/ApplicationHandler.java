@@ -3,6 +3,7 @@ package com.ra.projectmd5.advice;
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.exception.OutOfStockException;
 import com.ra.projectmd5.model.dto.response.DataError;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +39,11 @@ public class ApplicationHandler {
     @ExceptionHandler(OutOfStockException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public DataError<String> handleErrorOutOfStock(OutOfStockException ex) {
+        return new DataError<>(ex.getMessage(),HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value());
+    }
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public DataError<String> handleErrorBadRequest(BadRequestException ex) {
         return new DataError<>(ex.getMessage(),HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value());
     }
 }
