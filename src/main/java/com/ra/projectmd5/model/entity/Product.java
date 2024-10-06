@@ -24,6 +24,7 @@ public class Product {
     @Builder.Default
     private Integer sell = 0;
     private String image;
+    private String description;
     private Integer sale;
     @Builder.Default
     private Boolean status = true;

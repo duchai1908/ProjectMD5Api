@@ -68,6 +68,9 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productService.getProductById(productDetailRequest.getProductId());
         sizeService.getSizeById(productDetailRequest.getSizeId());
         colorService.getColorById(productDetailRequest.getColorId());
+        if(productDetailRepository.existsByColorIdAndSizeIdAndProductId(productDetailRequest.getColorId(), productDetailRequest.getSizeId(), productDetailRequest.getProductId())) {
+            throw new DataExistException("Chi tiết sản phẩm đã tồn tại","message");
+        }
 //        if(productDetailRepository.existsByName(productDetailRequest.getName())){
 //            throw new DataExistException("Tên chi tiết sản phẩm đã tồn tại","name");
 //        }
@@ -121,9 +124,11 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         if(!Objects.equals(productDetailRequest.getName(), productDetail.getName()) && existsByName(productDetailRequest.getName())){
             throw new DataExistException("Tên sản phẩm đã tồn tại","name");
         }
-        if(!Objects.equals(productDetailRequest.getDescription(), "")){
-            productDetail.setDescription(productDetailRequest.getDescription());
+        if(!Objects.equals(productDetailRequest.getColorId(), productDetail.getColor().getId()) || !Objects.equals(productDetailRequest.getSizeId(), productDetail.getSize().getId()) && productDetailRepository.existsByColorIdAndSizeIdAndProductId(productDetailRequest.getColorId(), productDetailRequest.getSizeId(),productDetailRequest.getProductId())){
+            throw new DataExistException("Chi tiết sản phẩm đã tồn tại","message");
         }
+
+        productDetail.setDescription(productDetailRequest.getDescription());
         productDetail.setName(productDetailRequest.getName());
         productDetail.setPrice(productDetailRequest.getPrice());
         productDetail.setStock(productDetailRequest.getStock());
@@ -166,7 +171,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
     @Override
     public List<ProductDetail> findAllProductDetailByProductId(Long id) {
         return productDetailRepository.findProductDetailsByProduct_Id(id);
-
+    }
     /**
      * @Param colorId Long
      * @Param sizeId Long
@@ -180,6 +185,5 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         Size size = sizeService.getSizeById(sizeId);
         Product product = productService.getProductById(productId);
         return productDetailRepository.findByColorAndSizeAndProduct(color, size, product);
-
     }
 }

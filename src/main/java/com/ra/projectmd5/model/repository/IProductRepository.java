@@ -31,6 +31,8 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(String search, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCaseOrderByUpdatedAtDesc(String search, Pageable pageable);
-
+    Page<Product> findAllByCategoryId(Long cateId, Pageable pageable);
+    @Query("SELECT p FROM Product p JOIN p.category c WHERE c.id = :cateId AND p.name LIKE %:search%")
+    Page<Product> findAllByCategoryIdAndSearch(@Param("cateId") Long cateId, @Param("search") String search, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCase(String search, Pageable pageable);
 }

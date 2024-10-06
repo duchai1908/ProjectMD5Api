@@ -16,7 +16,6 @@ public interface IProductDetailService {
     ProductDetail getProductDetailByColorAndSize(Long colorId, Long sizeId, Long productId);
     void deleteProductDetail(Long id);
     boolean existsByName(String name);
-
     List<ProductDetail> findAllProductDetailByNothing();
     List<ProductDetail> findAllProductDetailByProductId(Long id);
 
