@@ -19,6 +19,8 @@ public class ProductUpdateRequest {
     private MultipartFile image;
     @NotNull(message = "Status không được để trống")
     private boolean status;
+    @NotBlank(message = "Mô tả không được để trống")
+    private String description;
     @NotNull(message = "Danh mục không được để trống")
     private Long categoryId;
     @NotNull(message = "Mục giảm giá không được để trống")

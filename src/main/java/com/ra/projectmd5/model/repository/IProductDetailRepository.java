@@ -14,7 +14,7 @@ public interface IProductDetailRepository extends JpaRepository<ProductDetail, L
     Page<ProductDetail> findAllByProductId(Long productId, Pageable pageable);
     Page<ProductDetail> findAllByProductIdContainsIgnoreCase(Long productId,String search, Pageable pageable);
     boolean existsByName(String name);
-
+    boolean existsByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
     List<ProductDetail> findProductDetailsByProduct_Id(Long productId);
 
     ProductDetail findByColorAndSizeAndProduct(Color color, Size size, Product product);
