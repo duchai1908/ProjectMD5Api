@@ -5,6 +5,7 @@ import com.ra.projectmd5.model.dto.request.RatingRequest;
 import com.ra.projectmd5.model.entity.Rating;
 import com.ra.projectmd5.model.repository.IRatingRepository;
 import com.ra.projectmd5.model.service.IProductDetailService;
+import com.ra.projectmd5.model.service.IProductService;
 import com.ra.projectmd5.model.service.IRatingService;
 import com.ra.projectmd5.model.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 public class RatingServiceImpl implements IRatingService {
     private final IRatingRepository ratingRepository;
     private final IUserService userService;
-    private final IProductDetailService productDetailService;
+    private final IProductService productService;
 
     /**
      * @Param pageable Pageable
@@ -42,7 +43,7 @@ public class RatingServiceImpl implements IRatingService {
         boolean check = true;
         if(!listRate.isEmpty()){
             for(Rating rating : listRate){
-                if(rating.getUser().getId().equals(userId) && rating.getProductDetail().getId().equals(ratingRequest.getProductDetail_id())){
+                if(rating.getUser().getId().equals(userId) && rating.getProducts().getId().equals(ratingRequest.getProductDetail_id())){
                     check = false;
                     break;
                 }
@@ -56,7 +57,7 @@ public class RatingServiceImpl implements IRatingService {
                 .rating(ratingRequest.getRating())
                 .comment(ratingRequest.getComment())
                 .user(userService.findById(userId))
-                .productDetail(productDetailService.getProductDetailById(ratingRequest.getProductDetail_id()))
+                .products(productService.getProductById(ratingRequest.getProductDetail_id()))
                 .build();
         return ratingRepository.save(rating);
     }
