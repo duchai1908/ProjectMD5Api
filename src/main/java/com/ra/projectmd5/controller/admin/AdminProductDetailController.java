@@ -58,4 +58,5 @@ public class AdminProductDetailController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.getProductDetailByColorAndSize(colorId, sizeId, productId), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
 
     }
+    //add
 }
