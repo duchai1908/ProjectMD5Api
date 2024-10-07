@@ -16,7 +16,7 @@ public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="productdetail_name",nullable = false,unique = true, length = 100)
+    @Column(name="productdetail_name", length = 100)
     private String name;
     private String description;
     private Integer stock;

@@ -3,9 +3,13 @@ package com.ra.projectmd5.model.service.impl;
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductRequest;
 import com.ra.projectmd5.model.dto.request.ProductUpdateRequest;
-import com.ra.projectmd5.model.entity.Product;
+import com.ra.projectmd5.model.dto.response.ProductResponse;
+import com.ra.projectmd5.model.entity.*;
+import com.ra.projectmd5.model.repository.IImageProductDetailRepository;
+import com.ra.projectmd5.model.repository.IProductDetailRepository;
 import com.ra.projectmd5.model.repository.IProductRepository;
 import com.ra.projectmd5.model.service.ICategoryService;
+import com.ra.projectmd5.model.service.IProductDetailService;
 import com.ra.projectmd5.model.service.IProductService;
 import com.ra.projectmd5.model.service.UploadService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,8 @@ public class ProductServiceImpl implements IProductService {
     private final IProductRepository productRepository;
     private final ICategoryService categoryService;
     private final UploadService uploadService;
+    private final IImageProductDetailRepository iImageProductDetailRepository;
+    private final IProductDetailRepository productDetailRepository;
     /**
      * @Param pageable Pageable
      * @Param {*} search: thông tin vào dữ liệu cần tìm kiếm
@@ -110,6 +114,7 @@ public class ProductServiceImpl implements IProductService {
                 .category(categoryService.getCategoryById(productRequest.getCategoryId()))
                 .createdAt(new Date())
                 .updatedAt(new Date())
+                .description(productRequest.getDescription())
                 .image(uploadService.uploadFileToServer(productRequest.getImage()))
                 .status(true)
                 .sale(productRequest.getSale())
@@ -139,6 +144,7 @@ public class ProductServiceImpl implements IProductService {
             product.setImage(multipartFile);
         }
         product.setName(productRequest.getName());
+        product.setDescription(productRequest.getDescription());
 //        product.setSell(product.getSell());
         product.setCategory(categoryService.getCategoryById(productRequest.getCategoryId()));
         product.setSale(productRequest.getSale());
@@ -183,11 +189,6 @@ public class ProductServiceImpl implements IProductService {
         };
     }
 
-    @Override
-    public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
-        return null;
-    }
-
     /**
      * @Param id Long
      * @apiNote thay đổi trạng thái sản phẩm
@@ -201,4 +202,53 @@ public class ProductServiceImpl implements IProductService {
 
     }
 
+    /**
+     * @Param categoryId Long
+     * @Param pageable Pageable
+     * @Param search String
+     * @apiNote Lấy toàn bộ Product theo Category id
+     * @Auth Duc Hai (06/10/2024)
+     * */
+    @Override
+    public Page<Product> getAllByCategoryId(Long categoryId, Pageable pageable, String search) {
+        if(search != null && !search.isEmpty()){
+            return productRepository.findAllByCategoryIdAndSearch(categoryId, search, pageable);
+        }else{
+            return productRepository.findAllByCategoryId(categoryId,pageable);
+        }
+    }
+
+    /**
+     * @Param productId Long
+     * @apiNote Trả về 1 productResponse với Product và Set Color,Size
+     * @Auth Duc Hai(06/10/2024)
+     * */
+    @Override
+    public ProductResponse getProductResponseByProductId(Long productId) {
+        Product product = getProductById(productId);
+        Set<Color> colorSet = new HashSet<>();
+        Set<Size> sizeSet = new HashSet<>();
+        List<ProductDetail> productDetailList = productDetailRepository.findProductDetailsByProduct_Id(productId);
+        List<ImageProductDetail> imageProductDetails;
+        List<String> image = new ArrayList<>();
+        for (ProductDetail productDetail : productDetailList) {
+            imageProductDetails = iImageProductDetailRepository.findImageProductDetailByProductDetailId(productDetail.getId());
+            for(ImageProductDetail imageProductDetail : imageProductDetails){
+                image.add(imageProductDetail.getImage());
+            }
+            colorSet.add(productDetail.getColor());
+            sizeSet.add(productDetail.getSize());
+        }
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setImages(image);
+        productResponse.setProduct(product);
+        productResponse.setColors(colorSet);
+        productResponse.setSizes(sizeSet);
+        return productResponse;
+    }
+
+    @Override
+    public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
+        return null;
+    }
 }
