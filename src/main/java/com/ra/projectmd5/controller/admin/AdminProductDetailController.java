@@ -52,4 +52,5 @@ public class AdminProductDetailController {
     public ResponseEntity<?> getAllProductDetailsByProductId(@PathVariable Long productId) {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.findAllProductDetailByProductId(productId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
+    //add
 }
