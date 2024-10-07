@@ -73,7 +73,7 @@ public class ProductServiceImpl implements IProductService {
         // Gọi repository với các filter
         return productRepository.findProductsWithFilters(pageable, search, minPrice, maxPrice, colorId,sortOption);
     }
-
+    //add
     /**
      * @Param id Long
      * @apiNote Lấy ra
@@ -188,6 +188,7 @@ public class ProductServiceImpl implements IProductService {
             default -> productRepository.findByNameContainingIgnoreCase(productName, pageable);
         };
     }
+
     /**
      * @Param id Long
      * @apiNote thay đổi trạng thái sản phẩm
