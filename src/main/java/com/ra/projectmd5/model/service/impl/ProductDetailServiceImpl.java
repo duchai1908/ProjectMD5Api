@@ -2,6 +2,7 @@ package com.ra.projectmd5.model.service.impl;
 
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductDetailRequest;
+import com.ra.projectmd5.model.dto.response.ProductDetailResponse;
 import com.ra.projectmd5.model.entity.*;
 import com.ra.projectmd5.model.repository.IProductDetailRepository;
 import com.ra.projectmd5.model.service.*;
@@ -12,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -185,5 +183,24 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         Size size = sizeService.getSizeById(sizeId);
         Product product = productService.getProductById(productId);
         return productDetailRepository.findByColorAndSizeAndProduct(color, size, product);
+    }
+
+    /**
+     * @Param productDetailId Long
+     * @apiNote lấy thông tin chi tiết sản phẩm và hình ảnh theo id
+     * @Auth Duc Hai (07/10/2024)
+     * */
+    @Override
+    public ProductDetailResponse getProductDetailAndImage(Long productDetailId) {
+        ProductDetail productDetail = getProductDetailById(productDetailId);
+        List<ImageProductDetail> imageProductDetails = imageProductDetailService.findImageByProductDetailId(productDetailId);
+        List<String> list = new ArrayList<>();
+        for(ImageProductDetail imageProductDetail : imageProductDetails){
+            list.add(imageProductDetail.getImage());
+        }
+        ProductDetailResponse productDetailResponse = new ProductDetailResponse();
+        productDetailResponse.setProductDetail(productDetail);
+        productDetailResponse.setImages(list);
+        return productDetailResponse;
     }
 }

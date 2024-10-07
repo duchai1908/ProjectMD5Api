@@ -2,6 +2,7 @@ package com.ra.projectmd5.model.service;
 
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductDetailRequest;
+import com.ra.projectmd5.model.dto.response.ProductDetailResponse;
 import com.ra.projectmd5.model.entity.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,5 +19,5 @@ public interface IProductDetailService {
     boolean existsByName(String name);
     List<ProductDetail> findAllProductDetailByNothing();
     List<ProductDetail> findAllProductDetailByProductId(Long id);
-
+    ProductDetailResponse getProductDetailAndImage(Long productDetailId);
 }
