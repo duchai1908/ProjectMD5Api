@@ -18,5 +18,7 @@ public interface IProductDetailRepository extends JpaRepository<ProductDetail, L
     List<ProductDetail> findProductDetailsByProduct_Id(Long productId);
 
     ProductDetail findByColorAndSizeAndProduct(Color color, Size size, Product product);
-
+    boolean existsByColorId(Long colorId);
+    boolean existsBySizeId(Long sizeId);
+    //add
 }

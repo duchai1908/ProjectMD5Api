@@ -1,10 +1,12 @@
 package com.ra.projectmd5.advice;
 
+import com.ra.projectmd5.exception.CustomException;
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.exception.OutOfStockException;
 import com.ra.projectmd5.model.dto.response.DataError;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -45,5 +47,11 @@ public class ApplicationHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public DataError<String> handleErrorBadRequest(BadRequestException ex) {
         return new DataError<>(ex.getMessage(),HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value());
+    }
+
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handleCustomException(CustomException ex) {
+        return new ResponseEntity<>(new DataError<>(ex.getMessage(),ex.getStatus(),ex.getStatus().value()),ex.getStatus());
     }
 }
