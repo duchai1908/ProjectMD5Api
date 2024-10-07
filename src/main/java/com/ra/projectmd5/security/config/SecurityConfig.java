@@ -62,6 +62,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
 //                        .requestMatchers("/api/v1/moderator/**").hasAuthority(RoleName.ROLE_MODERATOR.name())
 //                        .requestMatchers("/user/**").hasAuthority(RoleName.ROLE_USER.name())
+
                         .anyRequest().permitAll())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint).accessDeniedHandler(accessDenied))

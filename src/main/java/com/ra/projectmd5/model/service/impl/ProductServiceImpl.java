@@ -69,7 +69,7 @@ public class ProductServiceImpl implements IProductService {
         // Gọi repository với các filter
         return productRepository.findProductsWithFilters(pageable, search, minPrice, maxPrice, colorId,sortOption);
     }
-
+    //add
     /**
      * @Param id Long
      * @apiNote Lấy ra
@@ -175,10 +175,18 @@ public class ProductServiceImpl implements IProductService {
         return switch (sortOption) {
             case "aToZ" -> productRepository.findProductsByNameContainsIgnoreCaseOrderByNameAsc(productName, pageable);
             case "zToA" -> productRepository.findProductsByNameContainsIgnoreCaseOrderByNameDesc(productName, pageable);
-            case "oldToNew" -> productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtDesc(productName, pageable);
-            case "newToOld" -> productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(productName, pageable);
-            default -> productRepository.findByNameContainingIgnoreCase(productName,pageable);
+            case "oldToNew" ->
+                    productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtDesc(productName, pageable);
+            case "newToOld" ->
+                    productRepository.findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(productName, pageable);
+            default -> productRepository.findByNameContainingIgnoreCase(productName, pageable);
         };
+    }
+
+    @Override
+    public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
+        return null;
+    }
 
     /**
      * @Param id Long

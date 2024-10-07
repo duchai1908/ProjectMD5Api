@@ -166,7 +166,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
     @Override
     public List<ProductDetail> findAllProductDetailByProductId(Long id) {
         return productDetailRepository.findProductDetailsByProduct_Id(id);
-
+    }
     /**
      * @Param colorId Long
      * @Param sizeId Long
