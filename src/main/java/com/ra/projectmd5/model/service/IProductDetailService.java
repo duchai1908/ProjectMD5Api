@@ -20,4 +20,5 @@ public interface IProductDetailService {
     List<ProductDetail> findAllProductDetailByNothing();
     List<ProductDetail> findAllProductDetailByProductId(Long id);
     ProductDetailResponse getProductDetailAndImage(Long productDetailId);
+    void save(ProductDetail productDetail);
 }

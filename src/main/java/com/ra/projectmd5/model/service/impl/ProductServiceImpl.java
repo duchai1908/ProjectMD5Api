@@ -247,4 +247,14 @@ public class ProductServiceImpl implements IProductService {
     public Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption) {
         return null;
     }
+
+    @Override
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getSellProduct() {
+        return productRepository.findTop6SellingProduct();
+    }
 }

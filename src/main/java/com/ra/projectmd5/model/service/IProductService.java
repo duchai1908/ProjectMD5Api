@@ -24,5 +24,6 @@ public interface IProductService {
     ProductResponse getProductResponseByProductId(Long productId);
     Page<Product> findAll(Pageable pageable, String search, Double minPrice, Double maxPrice, String color, String sortOption);
     Product changeStatus(Long id);
-
+    void save (Product product);
+    List<Product> getSellProduct();
 }
