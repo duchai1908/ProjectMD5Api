@@ -25,6 +25,8 @@ public class OrdersServiceImpl implements IOrdersService {
     private final ICartItemService cartItemService;
     private final UUIDService uuidService;
     private final IOrderDetailRepository orderDetailRepository;
+    private final IProductService productService;
+    private final IProductDetailService productDetailService;
 
     /**
      * @Param pageable Pageable
@@ -103,6 +105,12 @@ public class OrdersServiceImpl implements IOrdersService {
             orderDetail.setOrders(orders);
             orderDetail.setProductName(cartItem.getProductDetail().getProduct().getName());
             orderDetailRepository.save(orderDetail);
+            ProductDetail productDetail = cartItem.getProductDetail();
+            productDetail.setStock(productDetail.getStock() - cartItem.getQuantity());
+            productDetailService.save(productDetail);
+            Product product = productDetail.getProduct();
+            product.setSell(product.getSell() + cartItem.getQuantity());
+            productService.save(product);
         }
 
         // Xoá giỏ hàng

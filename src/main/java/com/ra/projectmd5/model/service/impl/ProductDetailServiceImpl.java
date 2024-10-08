@@ -203,4 +203,9 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productDetailResponse.setImages(list);
         return productDetailResponse;
     }
+
+    @Override
+    public void save(ProductDetail productDetail) {
+        productDetailRepository.save(productDetail);
+    }
 }

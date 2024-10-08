@@ -40,5 +40,10 @@ public class GuestProductController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(ratingService.findRatingByProductId(productId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 
+    @GetMapping("/top6bestselling")
+    public ResponseEntity<?> getTop6BestSelling() {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.getSellProduct(), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
+
 
 }
