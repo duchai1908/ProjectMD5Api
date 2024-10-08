@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICouponRepository extends JpaRepository<Coupon, Long> {
     Page<Coupon> findCouponBySkuContainsIgnoreCase(String sku, Pageable pageable);
+    Coupon getCouponBySku(String sku);
 }

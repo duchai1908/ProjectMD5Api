@@ -9,4 +9,5 @@ public interface ICouponService {
     Coupon addCoupon(Coupon coupon);
     Coupon getCoupon(Long couponId);
     void deleteCoupon(Long couponId);
+    Coupon getCouponByCode(String code);
 }
