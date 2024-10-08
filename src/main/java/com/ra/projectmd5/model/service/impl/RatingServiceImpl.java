@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +71,22 @@ public class RatingServiceImpl implements IRatingService {
     @Override
     public Page<Rating> findAllRatingsByProductId(Long productId, Pageable pageable) {
         return ratingRepository.findAllByProductsId(productId, pageable);
+    }
+
+    @Override
+    public Map<String, Object> findRatingByProductId(Long productId) {
+        Object[] averageResult = ratingRepository.findAverageRatingAndCountByProductId(productId);
+        List<Object[]> countResults = ratingRepository.findCountByRatingGroupedByProductId(productId);
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("averageRating", averageResult[0]);
+
+        Map<Integer, Long> ratingCount = new HashMap<>();
+        for (Object[] result : countResults) {
+            ratingCount.put((Integer) result[0], (Long) result[1]);
+        }
+        stats.put("ratingCount", ratingCount);
+        return stats;
     }
 
     @Override
