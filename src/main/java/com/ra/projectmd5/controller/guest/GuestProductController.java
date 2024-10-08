@@ -35,5 +35,10 @@ public class GuestProductController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(ratingService.findAllRatingsByProductId(productId,pageable),HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
 
+    @GetMapping("/totalCountRating/{productId}")
+    public ResponseEntity<?> getTotalCountRating(@PathVariable Long productId) {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(ratingService.findRatingByProductId(productId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
+
 
 }
