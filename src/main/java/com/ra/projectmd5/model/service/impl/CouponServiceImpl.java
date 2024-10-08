@@ -73,4 +73,9 @@ public class CouponServiceImpl implements ICouponService {
         Coupon coupon = getCoupon(couponId);
         couponRepository.delete(coupon);
     }
+
+    @Override
+    public Coupon getCouponByCode(String code) {
+        return couponRepository.getCouponBySku(code);
+    }
 }
