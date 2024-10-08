@@ -10,4 +10,5 @@ public interface IRatingService {
     Page<Rating> findAllRatings(Pageable pageable, String username);
     Rating addRating(RatingRequest ratingRequest, Long userId) throws DataExistException;
     void deleteRating(Long id);
+    Page<Rating> findAllRatingsByProductId(Long productId, Pageable pageable);
 }

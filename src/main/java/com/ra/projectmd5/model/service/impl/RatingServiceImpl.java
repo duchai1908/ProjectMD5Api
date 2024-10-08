@@ -3,6 +3,7 @@ package com.ra.projectmd5.model.service.impl;
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.RatingRequest;
 import com.ra.projectmd5.model.entity.Rating;
+import com.ra.projectmd5.model.entity.User;
 import com.ra.projectmd5.model.repository.IRatingRepository;
 import com.ra.projectmd5.model.service.IProductDetailService;
 import com.ra.projectmd5.model.service.IProductService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,10 +42,11 @@ public class RatingServiceImpl implements IRatingService {
     @Override
     public Rating addRating(RatingRequest ratingRequest,Long userId) throws DataExistException {
         List<Rating> listRate = ratingRepository.findAll();
+        User user = userService.findById(userId);
         boolean check = true;
         if(!listRate.isEmpty()){
             for(Rating rating : listRate){
-                if(rating.getUser().getId().equals(userId) && rating.getProducts().getId().equals(ratingRequest.getProductDetail_id())){
+                if(rating.getUser().getId().equals(userId) && rating.getProducts().getId().equals(ratingRequest.getProductId())){
                     check = false;
                     break;
                 }
@@ -57,9 +60,15 @@ public class RatingServiceImpl implements IRatingService {
                 .rating(ratingRequest.getRating())
                 .comment(ratingRequest.getComment())
                 .user(userService.findById(userId))
-                .products(productService.getProductById(ratingRequest.getProductDetail_id()))
+                .products(productService.getProductById(ratingRequest.getProductId()))
+                .createdAt(new Date())
                 .build();
         return ratingRepository.save(rating);
+    }
+
+    @Override
+    public Page<Rating> findAllRatingsByProductId(Long productId, Pageable pageable) {
+        return ratingRepository.findAllByProductsId(productId, pageable);
     }
 
     @Override
