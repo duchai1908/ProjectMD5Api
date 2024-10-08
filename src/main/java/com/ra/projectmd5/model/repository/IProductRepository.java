@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface IProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findProductByNameContainsIgnoreCase(String name, Pageable pageable);
     boolean existsByName(String name);
@@ -31,7 +33,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByNameContainingIgnoreCaseOrderByUpdatedAtAsc(String search, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCaseOrderByUpdatedAtDesc(String search, Pageable pageable);
-    Page<Product> findAllByCategoryId(Long cateId, Pageable pageable);
+    List<Product> findAllByCategoryId(Long cateId);
     @Query("SELECT p FROM Product p JOIN p.category c WHERE c.id = :cateId AND p.name LIKE %:search%")
     Page<Product> findAllByCategoryIdAndSearch(@Param("cateId") Long cateId, @Param("search") String search, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCase(String search, Pageable pageable);

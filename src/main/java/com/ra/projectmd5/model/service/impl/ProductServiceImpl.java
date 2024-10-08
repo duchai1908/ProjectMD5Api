@@ -210,12 +210,8 @@ public class ProductServiceImpl implements IProductService {
      * @Auth Duc Hai (06/10/2024)
      * */
     @Override
-    public Page<Product> getAllByCategoryId(Long categoryId, Pageable pageable, String search) {
-        if(search != null && !search.isEmpty()){
-            return productRepository.findAllByCategoryIdAndSearch(categoryId, search, pageable);
-        }else{
-            return productRepository.findAllByCategoryId(categoryId,pageable);
-        }
+    public List<Product> getAllByCategoryId(Long categoryId) {
+       return productRepository.findAllByCategoryId(categoryId);
     }
 
     /**

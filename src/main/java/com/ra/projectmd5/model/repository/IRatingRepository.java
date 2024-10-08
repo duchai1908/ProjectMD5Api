@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IRatingRepository extends JpaRepository<Rating, Long> {
     Page<Rating> findAllByUserUsername(String username, Pageable pageable);
+    Page<Rating> findAllByProductsId(Long productId, Pageable pageable);
 }
