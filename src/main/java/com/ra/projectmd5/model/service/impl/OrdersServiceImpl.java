@@ -152,11 +152,14 @@ public class OrdersServiceImpl implements IOrdersService {
         Status s;
         try {
             s = Status.valueOf(status);
+            if(orders.getStatus() != Status.SUCCESS){
+                orders.setStatus(s);
+                orders = ordersRepository.save(orders);
+            }
         }catch (Exception e){
             throw new NoSuchElementException("Không tìm thấy trạng thái");
         }
-        orders.setStatus(s);
-        return ordersRepository.save(orders);
+        return orders;
     }
 
     /**

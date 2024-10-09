@@ -3,6 +3,7 @@ package com.ra.projectmd5.controller.admin;
 import com.ra.projectmd5.model.dto.response.ResponseDtoSuccess;
 import com.ra.projectmd5.model.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,7 +30,7 @@ public class AdminUserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> changeStatus(@PathVariable Long userId){
+    public ResponseEntity<?> changeStatus(@PathVariable Long userId) throws BadRequestException {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(userService.changeStatus(userId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 

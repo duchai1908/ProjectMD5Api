@@ -35,7 +35,7 @@ public class RatingServiceImpl implements IRatingService {
     @Override
     public Page<Rating> findAllRatings(Pageable pageable, String username) {
         if(username != null && !username.isEmpty()) {
-            return ratingRepository.findAllByUserUsername(username, pageable);
+            return ratingRepository.findAllByUserUsernameContains(username, pageable);
         }else{
             return ratingRepository.findAll(pageable);
         }
