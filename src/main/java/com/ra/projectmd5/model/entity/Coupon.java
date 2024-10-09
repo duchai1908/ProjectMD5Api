@@ -3,9 +3,10 @@ package com.ra.projectmd5.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -26,10 +27,10 @@ public class Coupon {
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date created_at;
-    @Temporal(TemporalType.DATE)
+
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date start_at;
-    @Temporal(TemporalType.DATE)
+    private LocalDate start_at;
+
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date end_at;
+    private LocalDate end_at;
 }

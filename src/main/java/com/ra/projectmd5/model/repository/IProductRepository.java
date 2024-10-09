@@ -38,5 +38,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllByCategoryIdAndSearch(@Param("cateId") Long cateId, @Param("search") String search, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCase(String search, Pageable pageable);
 
+    @Query("SELECT p FROM Product p ORDER BY p.sell desc ")
     List<Product> findTop6SellingProduct();
 }
