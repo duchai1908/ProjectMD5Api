@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user/information")
@@ -25,7 +22,7 @@ public class UserInforController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(userService.changePassword(userDetailCustom.getUsers().getId(), changePasswordRequest), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
     @PutMapping("/change")
-    public ResponseEntity<?> changeInformationUser(@AuthenticationPrincipal UserDetailCustom userDetailCustom, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> changeInformationUser(@AuthenticationPrincipal UserDetailCustom userDetailCustom, @ModelAttribute UserRequest userRequest) {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(userService.changeUserInformation(userRequest,userDetailCustom.getUsers().getId()), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 }
