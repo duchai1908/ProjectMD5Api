@@ -257,4 +257,9 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> getSellProduct() {
         return productRepository.findTop6SellingProduct();
     }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 }

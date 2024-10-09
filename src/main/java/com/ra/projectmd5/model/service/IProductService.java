@@ -26,4 +26,5 @@ public interface IProductService {
     Product changeStatus(Long id);
     void save (Product product);
     List<Product> getSellProduct();
+    List<Product> findAll();
 }

@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
@@ -72,5 +74,10 @@ public class UserServiceImpl implements IUserService {
             user.setImage(uploadService.uploadFileToServer(userRequest.getImage()));
         }
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }

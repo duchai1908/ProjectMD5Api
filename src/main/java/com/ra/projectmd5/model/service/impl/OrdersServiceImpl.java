@@ -2,6 +2,7 @@ package com.ra.projectmd5.model.service.impl;
 
 import com.ra.projectmd5.constants.Status;
 import com.ra.projectmd5.model.dto.request.OrderRequest;
+import com.ra.projectmd5.model.dto.response.MonthlyRevenueResponse;
 import com.ra.projectmd5.model.dto.response.OrdersResponse;
 import com.ra.projectmd5.model.entity.*;
 import com.ra.projectmd5.model.repository.IOrderDetailRepository;
@@ -175,5 +176,15 @@ public class OrdersServiceImpl implements IOrdersService {
             throw new BadRequestException("Không thể huỷ đơn hàng");
         }
         return orders;
+    }
+
+    @Override
+    public List<MonthlyRevenueResponse> getAllRevenue() {
+        return ordersRepository.findMonthlyRevenue();
+    }
+
+    @Override
+    public List<Orders> findAll() {
+        return ordersRepository.findAll();
     }
 }
