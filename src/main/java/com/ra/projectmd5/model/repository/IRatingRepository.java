@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IRatingRepository extends JpaRepository<Rating, Long> {
-    Page<Rating> findAllByUserUsername(String username, Pageable pageable);
+    Page<Rating> findAllByUserUsernameContains(String username, Pageable pageable);
     Page<Rating> findAllByProductsId(Long productId, Pageable pageable);
     @Query("SELECT AVG(r.rating) FROM Rating r WHERE r.products.id = :productId")
     Object[] findAverageRatingAndCountByProductId(@Param("productId") Long productId);
