@@ -135,7 +135,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productDetail.setProduct(productService.getProductById(productDetailRequest.getProductId()));
         productDetail.setUpdated_at(new Date());
         productDetail = productDetailRepository.save(productDetail);
-        if(!productDetailRequest.getImages().isEmpty()){
+        if(productDetailRequest.getImages() != null && !productDetailRequest.getImages().isEmpty()){
             imageProductDetailService.deleteImageByProductDetailId(id);
             for(MultipartFile file : productDetailRequest.getImages()){
                 ImageProductDetail imageProductDetail = ImageProductDetail.builder()
