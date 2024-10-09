@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -121,5 +122,10 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = findById(id);
         category.setStatus(!category.getStatus());
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 }
