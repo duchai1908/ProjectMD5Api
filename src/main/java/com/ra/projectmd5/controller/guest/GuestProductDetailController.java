@@ -56,6 +56,5 @@ public class GuestProductDetailController {
     @GetMapping("/{colorId}/{sizeId}/{productId}")
     public ResponseEntity<?> getProductDetailBySizeColorId(@PathVariable Long colorId, @PathVariable Long sizeId, @PathVariable Long productId) {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productDetailService.getProductDetailByColorAndSize(colorId, sizeId, productId), HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
-
     }
 }
