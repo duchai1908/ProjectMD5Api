@@ -211,7 +211,7 @@ public class ProductServiceImpl implements IProductService {
      * */
     @Override
     public List<Product> getAllByCategoryId(Long categoryId) {
-       return productRepository.findAllByCategoryId(categoryId);
+       return productRepository.findTop6ByCategoryId(categoryId);
     }
 
     /**
