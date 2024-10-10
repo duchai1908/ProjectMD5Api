@@ -44,4 +44,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT p FROM Product p ORDER BY p.createdAt DESC")
     List<Product> findNewestProduct(Pageable pageable);
+    boolean existsByCategoryId(Long cateId);
 }

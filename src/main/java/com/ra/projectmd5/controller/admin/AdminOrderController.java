@@ -45,4 +45,8 @@ public class AdminOrderController {
     public ResponseEntity<?> getOrders(@PathVariable Long ordersId, @AuthenticationPrincipal UserDetailCustom userDetailCustom){
         return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.getOrdersById(ordersId,userDetailCustom.getUsers().getId()), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
+    @GetMapping("/orderinfo/{ordersId}")
+    public ResponseEntity<?> getOrderInfo(@PathVariable Long ordersId){
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.getOrdersByOrderId(ordersId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
 }

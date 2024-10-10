@@ -26,18 +26,21 @@ public class WishlistServiceImpl implements IWishlistService {
     }
 
     @Override
-    public void addToWishlist(Long productId,Long userId) {
+    public String addToWishlist(Long productId,Long userId) {
+        String s;
         User user = userService.findById(userId);
         Product product = productService.getProductById(productId);
         boolean check = user.getProducts().contains(product);
         if (check) {
             user.getProducts().remove(product);
+            s = "Đã xoá khỏi danh sách yêu thích";
         }else{
             Set<Product> products = user.getProducts();
             products.add(product);
-
+            s = "Đã têm vào danh sách yu thích";
         }
         userRepository.save(user);
+        return s;
     }
 
     @Override
