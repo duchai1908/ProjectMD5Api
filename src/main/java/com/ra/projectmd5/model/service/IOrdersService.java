@@ -20,4 +20,5 @@ public interface IOrdersService {
     List<Orders> findAll();
     Orders deniedOrder(Long ordersId) throws BadRequestException;
     Page<Orders> findAll(Pageable pageable,String search);
+    OrdersResponse getOrdersByOrderId(Long orderId);
 }
