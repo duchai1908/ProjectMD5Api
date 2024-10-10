@@ -34,4 +34,9 @@ public class AdminOrderController {
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), direction, sortField);
         return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.findAll(pageable, search),HttpStatus.OK.value(),HttpStatus.OK), HttpStatus.OK);
     }
+
+    @PutMapping("/{orderId}/{status}")
+    public ResponseEntity<?> changeStatusOrder(@PathVariable Long orderId, @PathVariable String status){
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.changeStatus(orderId, status), HttpStatus.OK.value(),HttpStatus.OK), HttpStatus.OK);
+    }
 }
