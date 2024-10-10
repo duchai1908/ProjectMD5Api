@@ -18,4 +18,5 @@ public interface IOrdersService {
     Orders cancelOrder(Long ordersId,Long userId) throws BadRequestException;
     List<MonthlyRevenueResponse> getAllRevenue();
     List<Orders> findAll();
+    Orders deniedOrder(Long ordersId) throws BadRequestException;
 }
