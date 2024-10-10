@@ -25,6 +25,10 @@ public class GuestCategoryController {
     public ResponseEntity<?> getListCategory() {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(categoryService.findAll(), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
+    @GetMapping("/listCategory/limit")
+    public ResponseEntity<?> getListCategoryLimit() {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(categoryService.getCategories(),HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
     @GetMapping("/listColor")
     public ResponseEntity<?> getListColor() {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(colorService.getAllColors(), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
