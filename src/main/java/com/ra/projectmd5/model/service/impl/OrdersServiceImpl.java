@@ -219,4 +219,13 @@ public class OrdersServiceImpl implements IOrdersService {
         }
         return null;
     }
+
+    @Override
+    public Page<Orders> findAll(Pageable pageable, String search) {
+        if(search != null && !search.isEmpty()){
+            return ordersRepository.findAllByCode(search,pageable);
+        }else{
+            return ordersRepository.findAll(pageable);
+        }
+    }
 }
