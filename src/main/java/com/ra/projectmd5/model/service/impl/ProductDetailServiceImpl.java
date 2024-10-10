@@ -2,8 +2,8 @@ package com.ra.projectmd5.model.service.impl;
 
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.ProductDetailRequest;
-import com.ra.projectmd5.model.entity.ImageProductDetail;
-import com.ra.projectmd5.model.entity.ProductDetail;
+import com.ra.projectmd5.model.dto.response.ProductDetailResponse;
+import com.ra.projectmd5.model.entity.*;
 import com.ra.projectmd5.model.repository.IProductDetailRepository;
 import com.ra.projectmd5.model.service.*;
 import jakarta.transaction.Transactional;
@@ -13,9 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -68,6 +66,9 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productService.getProductById(productDetailRequest.getProductId());
         sizeService.getSizeById(productDetailRequest.getSizeId());
         colorService.getColorById(productDetailRequest.getColorId());
+        if(productDetailRepository.existsByColorIdAndSizeIdAndProductId(productDetailRequest.getColorId(), productDetailRequest.getSizeId(), productDetailRequest.getProductId())) {
+            throw new DataExistException("Chi tiết sản phẩm đã tồn tại","message");
+        }
 //        if(productDetailRepository.existsByName(productDetailRequest.getName())){
 //            throw new DataExistException("Tên chi tiết sản phẩm đã tồn tại","name");
 //        }
@@ -121,9 +122,11 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         if(!Objects.equals(productDetailRequest.getName(), productDetail.getName()) && existsByName(productDetailRequest.getName())){
             throw new DataExistException("Tên sản phẩm đã tồn tại","name");
         }
-        if(!Objects.equals(productDetailRequest.getDescription(), "")){
-            productDetail.setDescription(productDetailRequest.getDescription());
+        if(!Objects.equals(productDetailRequest.getColorId(), productDetail.getColor().getId()) || !Objects.equals(productDetailRequest.getSizeId(), productDetail.getSize().getId()) && productDetailRepository.existsByColorIdAndSizeIdAndProductId(productDetailRequest.getColorId(), productDetailRequest.getSizeId(),productDetailRequest.getProductId())){
+            throw new DataExistException("Chi tiết sản phẩm đã tồn tại","message");
         }
+
+        productDetail.setDescription(productDetailRequest.getDescription());
         productDetail.setName(productDetailRequest.getName());
         productDetail.setPrice(productDetailRequest.getPrice());
         productDetail.setStock(productDetailRequest.getStock());
@@ -132,7 +135,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productDetail.setProduct(productService.getProductById(productDetailRequest.getProductId()));
         productDetail.setUpdated_at(new Date());
         productDetail = productDetailRepository.save(productDetail);
-        if(!productDetailRequest.getImages().isEmpty()){
+        if(productDetailRequest.getImages() != null && !productDetailRequest.getImages().isEmpty()){
             imageProductDetailService.deleteImageByProductDetailId(id);
             for(MultipartFile file : productDetailRequest.getImages()){
                 ImageProductDetail imageProductDetail = ImageProductDetail.builder()
@@ -155,5 +158,54 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         ProductDetail productDetail = getProductDetailById(id);
         imageProductDetailService.deleteImageByProductDetailId(id);
         productDetailRepository.delete(productDetail);
+    }
+
+
+    @Override
+    public List<ProductDetail> findAllProductDetailByNothing() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDetail> findAllProductDetailByProductId(Long id) {
+        return productDetailRepository.findProductDetailsByProduct_Id(id);
+    }
+    /**
+     * @Param colorId Long
+     * @Param sizeId Long
+     * @Param productId Long
+     * @apiNote tìm kiếm chi tiết sản phẩm theo color id, size id và product id
+     * @Auth Duc Hai (04/10/2024)
+     * */
+    @Override
+    public ProductDetail getProductDetailByColorAndSize(Long colorId, Long sizeId, Long productId) {
+        Color color = colorService.getColorById(colorId);
+        Size size = sizeService.getSizeById(sizeId);
+        Product product = productService.getProductById(productId);
+        return productDetailRepository.findByColorAndSizeAndProduct(color, size, product);
+    }
+
+    /**
+     * @Param productDetailId Long
+     * @apiNote lấy thông tin chi tiết sản phẩm và hình ảnh theo id
+     * @Auth Duc Hai (07/10/2024)
+     * */
+    @Override
+    public ProductDetailResponse getProductDetailAndImage(Long productDetailId) {
+        ProductDetail productDetail = getProductDetailById(productDetailId);
+        List<ImageProductDetail> imageProductDetails = imageProductDetailService.findImageByProductDetailId(productDetailId);
+        List<String> list = new ArrayList<>();
+        for(ImageProductDetail imageProductDetail : imageProductDetails){
+            list.add(imageProductDetail.getImage());
+        }
+        ProductDetailResponse productDetailResponse = new ProductDetailResponse();
+        productDetailResponse.setProductDetail(productDetail);
+        productDetailResponse.setImages(list);
+        return productDetailResponse;
+    }
+
+    @Override
+    public void save(ProductDetail productDetail) {
+        productDetailRepository.save(productDetail);
     }
 }

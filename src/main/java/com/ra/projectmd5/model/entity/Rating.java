@@ -3,6 +3,8 @@ package com.ra.projectmd5.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,5 +22,6 @@ public class Rating {
     private User user;
     @ManyToOne
     @JoinColumn(name="product_id")
-    private ProductDetail productDetail;
+    private Product products;
+    private Date createdAt;
 }

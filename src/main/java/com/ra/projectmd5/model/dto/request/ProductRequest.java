@@ -17,6 +17,8 @@ public class ProductRequest {
     private String name;
     @NotNull(message = "Ảnh sản phẩm không được để trống")
     private MultipartFile image;
+    @NotBlank(message = "Mô tả không được để trống")
+    private String description;
     @NotNull(message = "Status không được để trống")
     private boolean status;
     @NotNull(message = "Danh mục không được để trống")

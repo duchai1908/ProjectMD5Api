@@ -13,6 +13,6 @@ public class RatingRequest {
     private int rating;
     @NotBlank(message = "Bạn chưa nhập bình luận")
     private String comment;
-    @NotNull(message = "Không tìm thấy id chi tiết sản phẩm")
-    private Long productDetail_id;
+    @NotNull(message = "Không tìm thấy id sản phẩm")
+    private Long productId;
 }

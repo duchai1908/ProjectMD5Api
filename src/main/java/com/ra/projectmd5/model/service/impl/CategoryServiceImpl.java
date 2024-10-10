@@ -8,9 +8,11 @@ import com.ra.projectmd5.model.service.ICategoryService;
 import com.ra.projectmd5.model.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -110,6 +112,7 @@ public class CategoryServiceImpl implements ICategoryService {
         categoryRepository.delete(category);
     }
 
+
     /**
      * @Param id Long
      * @apiNote Thay đổi trạng thái của danh mục
@@ -120,5 +123,16 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = findById(id);
         category.setStatus(!category.getStatus());
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        Pageable pageable = PageRequest.of(0, 4);
+        return categoryRepository.findNewestCategory(pageable);
     }
 }
