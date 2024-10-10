@@ -20,5 +20,5 @@ public interface IOrdersRepository extends JpaRepository<Orders, Long> {
             "FROM Orders o " +
             "GROUP BY month(o.createdAt)")
     List<MonthlyRevenueResponse> findMonthlyRevenue();
-    Page<Orders> findAllByCode(String code, Pageable pageable);
+    Page<Orders> findAllByCodeContainsIgnoreCase(String code, Pageable pageable);
 }

@@ -223,9 +223,19 @@ public class OrdersServiceImpl implements IOrdersService {
     @Override
     public Page<Orders> findAll(Pageable pageable, String search) {
         if(search != null && !search.isEmpty()){
-            return ordersRepository.findAllByCode(search,pageable);
+            return ordersRepository.findAllByCodeContainsIgnoreCase(search,pageable);
         }else{
             return ordersRepository.findAll(pageable);
         }
+    }
+
+    @Override
+    public OrdersResponse getOrdersByOrderId(Long orderId) {
+        Orders orders = ordersRepository.findById(orderId).orElseThrow(() -> new NoSuchElementException("Không tìm thấy đơn hàng"));
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrdersId(orderId);
+        OrdersResponse ordersResponse = new OrdersResponse();
+        ordersResponse.setOrderDetail(orderDetailList);
+        ordersResponse.setOrders(orders);
+        return ordersResponse;
     }
 }
