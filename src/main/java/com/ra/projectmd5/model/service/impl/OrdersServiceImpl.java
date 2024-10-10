@@ -156,6 +156,11 @@ public class OrdersServiceImpl implements IOrdersService {
                 orders.setStatus(s);
                 orders = ordersRepository.save(orders);
             }
+            if(orders.getStatus() != Status.WAITING){
+                if(s.equals(Status.WAITING)){
+                    throw new BadRequestException("Không thể thay đổi trạng thái về WAITING");
+                }
+            }
         }catch (Exception e){
             throw new NoSuchElementException("Không tìm thấy trạng thái");
         }
@@ -175,6 +180,12 @@ public class OrdersServiceImpl implements IOrdersService {
         if(orders.getStatus() == Status.WAITING){
             orders.setStatus(Status.CANCEL);
             ordersRepository.save(orders);
+            List<OrderDetail> orderDetailList = orderDetailRepository.findOrderDetailsByOrdersId(ordersId);
+            for(OrderDetail orderDetail : orderDetailList){
+                ProductDetail productDetail = orderDetail.getProductDetail();
+                productDetail.setStock(productDetail.getStock() + orderDetail.getQuantity());
+                productDetailService.save(productDetail);
+            }
         }else{
             throw new BadRequestException("Không thể huỷ đơn hàng");
         }
@@ -189,5 +200,23 @@ public class OrdersServiceImpl implements IOrdersService {
     @Override
     public List<Orders> findAll() {
         return ordersRepository.findAll();
+    }
+
+    @Override
+    public Orders deniedOrder(Long ordersId) throws BadRequestException {
+        Orders orders = ordersRepository.findById(ordersId).orElseThrow(()-> new NoSuchElementException("Không tìm thấy đơn hàng"));
+        if(orders.getStatus() != Status.SUCCESS){
+            orders.setStatus(Status.DENIED);
+            ordersRepository.save(orders);
+            List<OrderDetail> orderDetailList = orderDetailRepository.findOrderDetailsByOrdersId(ordersId);
+            for(OrderDetail orderDetail : orderDetailList){
+                ProductDetail productDetail = orderDetail.getProductDetail();
+                productDetail.setStock(productDetail.getStock() + orderDetail.getQuantity());
+                productDetailService.save(productDetail);
+            }
+        }else{
+            throw new BadRequestException("Không thể huỷ đơn hàng");
+        }
+        return null;
     }
 }
