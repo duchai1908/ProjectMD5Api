@@ -3,6 +3,7 @@ package com.ra.projectmd5.model.service;
 import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.CategoryRequest;
 import com.ra.projectmd5.model.entity.Category;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,6 +17,6 @@ public interface ICategoryService {
     Category getCategoryById(Long id);
     Category changeStatus(Long id);
     List<Category> getCategories();
-    void deleteById(Long id);
+    void deleteById(Long id) throws BadRequestException;
     List<Category> findAll();
 }

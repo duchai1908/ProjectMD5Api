@@ -21,7 +21,7 @@ public class UserWishlistController {
     @PostMapping("/{productId}")
     public ResponseEntity<?> addToWishlist(@PathVariable Long productId, @AuthenticationPrincipal UserDetailCustom userDetailCustom) {
         wishlistService.addToWishlist(productId,userDetailCustom.getUsers().getId());
-        return new ResponseEntity<>(new ResponseDtoSuccess<>("Thêm thành công", HttpStatus.CREATED.value(), HttpStatus.CREATED), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(wishlistService.addToWishlist(productId,userDetailCustom.getUsers().getId()), HttpStatus.CREATED.value(), HttpStatus.CREATED), HttpStatus.CREATED);
     }
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProductFromWishlist(@PathVariable Long productId, @AuthenticationPrincipal UserDetailCustom userDetailCustom) {

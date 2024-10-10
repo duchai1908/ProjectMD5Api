@@ -5,6 +5,7 @@ import com.ra.projectmd5.model.dto.request.CategoryRequest;
 import com.ra.projectmd5.model.dto.response.ResponseDtoSuccess;
 import com.ra.projectmd5.model.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -53,7 +54,7 @@ public class AdminCategoryController {
 
     // Delete cate by Id
     @DeleteMapping("/{cateId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long cateId)  {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long cateId) throws BadRequestException {
         categoryService.deleteById(cateId);
         return new ResponseEntity<>(new ResponseDtoSuccess<>("Delete Successly",HttpStatus.OK.value(), HttpStatus.OK),HttpStatus.OK);
     }
