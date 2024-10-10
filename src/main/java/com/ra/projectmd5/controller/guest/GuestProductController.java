@@ -65,4 +65,15 @@ public class GuestProductController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.getAllLimit(), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getProductsByNameAndSort(
+            @PageableDefault(page = 0, size = 2, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(defaultValue = "") String productName,
+            @RequestParam(defaultValue = "none") String sortOption) {
+        System.out.println(productName);
+        Page<Product> products = productService.findAllProductsByNameAndSort(productName, pageable, sortOption);
+
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(products, HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
+
 }

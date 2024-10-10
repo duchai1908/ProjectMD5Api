@@ -19,4 +19,5 @@ public interface IOrdersService {
     List<MonthlyRevenueResponse> getAllRevenue();
     List<Orders> findAll();
     Orders deniedOrder(Long ordersId) throws BadRequestException;
+    Page<Orders> findAll(Pageable pageable,String search);
 }
