@@ -2,6 +2,7 @@ package com.ra.projectmd5.controller.admin;
 
 import com.ra.projectmd5.model.dto.response.ResponseDtoSuccess;
 import com.ra.projectmd5.model.service.IOrdersService;
+import com.ra.projectmd5.security.principle.UserDetailCustom;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,5 +40,9 @@ public class AdminOrderController {
     @PutMapping("/{orderId}/{status}")
     public ResponseEntity<?> changeStatusOrder(@PathVariable Long orderId, @PathVariable String status){
         return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.changeStatus(orderId, status), HttpStatus.OK.value(),HttpStatus.OK), HttpStatus.OK);
+    }
+    @GetMapping("/{ordersId}")
+    public ResponseEntity<?> getOrders(@PathVariable Long ordersId, @AuthenticationPrincipal UserDetailCustom userDetailCustom){
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(ordersService.getOrdersById(ordersId,userDetailCustom.getUsers().getId()), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 }
