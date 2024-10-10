@@ -262,4 +262,10 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+
+    @Override
+    public List<Product> getAllLimit() {
+        Pageable pageable = PageRequest.of(0, 6);
+        return productRepository.findNewestProduct(pageable);
+    }
 }

@@ -8,6 +8,7 @@ import com.ra.projectmd5.model.service.ICategoryService;
 import com.ra.projectmd5.model.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -127,5 +128,11 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        Pageable pageable = PageRequest.of(0, 4);
+        return categoryRepository.findNewestCategory(pageable);
     }
 }

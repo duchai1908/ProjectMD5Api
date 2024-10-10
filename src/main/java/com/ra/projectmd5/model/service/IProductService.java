@@ -27,4 +27,5 @@ public interface IProductService {
     void save (Product product);
     List<Product> getSellProduct();
     List<Product> findAll();
+    List<Product> getAllLimit();
 }

@@ -60,4 +60,9 @@ public class GuestProductController {
         return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.getAllByCategoryId(cateId), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
     }
 
+    @GetMapping("/newest")
+    public ResponseEntity<?> getNewestProduct() {
+        return new ResponseEntity<>(new ResponseDtoSuccess<>(productService.getAllLimit(), HttpStatus.OK.value(), HttpStatus.OK), HttpStatus.OK);
+    }
+
 }
