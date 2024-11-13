@@ -4,13 +4,17 @@ import com.ra.projectmd5.exception.DataExistException;
 import com.ra.projectmd5.model.dto.request.CategoryRequest;
 import com.ra.projectmd5.model.entity.Category;
 import com.ra.projectmd5.model.repository.ICategoryRepository;
+import com.ra.projectmd5.model.repository.IProductRepository;
 import com.ra.projectmd5.model.service.ICategoryService;
 import com.ra.projectmd5.model.service.UploadService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -18,6 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryRepository categoryRepository;
+    private final IProductRepository productRepository;
     private final UploadService uploadService;
 
     /**
@@ -105,10 +110,14 @@ public class CategoryServiceImpl implements ICategoryService {
      * */
     // Delete Category By Id
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws BadRequestException {
         Category category = findById(id);
+        if(productRepository.existsByCategoryId(id)){
+            throw new BadRequestException("Không thể xoá danh mục có sản phẩm");
+        }
         categoryRepository.delete(category);
     }
+
 
     /**
      * @Param id Long
@@ -120,5 +129,16 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = findById(id);
         category.setStatus(!category.getStatus());
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        Pageable pageable = PageRequest.of(0, 4);
+        return categoryRepository.findNewestCategory(pageable);
     }
 }

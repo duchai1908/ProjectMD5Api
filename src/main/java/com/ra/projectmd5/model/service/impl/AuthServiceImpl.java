@@ -64,11 +64,11 @@ public class AuthServiceImpl implements IAuthService {
             // để kiểm tra xem username và password từ form và vào database lấy thông tin từ UserDetailCustom và UserDetailCustomService
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(formLogin.getUsername(), formLogin.getPassword()));
         }catch (AuthenticationException e){
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException("Tài khoản hoặc mật khẩu không đúng");
         }
         UserDetailCustom userDetail = (UserDetailCustom) authentication.getPrincipal();
         if(!userDetail.getUsers().getStatus()){
-            throw new BadCredentialsException("Your account has been locked");
+            throw new BadCredentialsException("Tài khoản của bạn đã bị khoá");
         }
         String accessToken = jwtProvider.generateToken(userDetail);
         return JwtResponse.builder()
